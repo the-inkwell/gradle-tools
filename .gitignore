@@ -1,7 +1,7 @@
 # Gradle & idea
 .DS_Store
 .gradle/
-**/gradle/dolbyio/
+**/gradle/extended/
 build/
 .idea/
 local.properties

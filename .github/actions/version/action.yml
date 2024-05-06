@@ -12,8 +12,8 @@ runs:
       id: environment
       shell: bash
       run: |
-        grep "def version = '" dolbyio.gradle | cut -d"'" -f2 | sed "s/[^[:digit:][:alpha:]\.-]//g"
-        export VERSION=$(grep "def version = '" dolbyio.gradle | cut -d"'" -f2 | sed "s/[^[:digit:][:alpha:]\.-]//g")
+        grep "def version = '" extended.gradle | cut -d"'" -f2 | sed "s/[^[:digit:][:alpha:]\.-]//g"
+        export VERSION=$(grep "def version = '" extended.gradle | cut -d"'" -f2 | sed "s/[^[:digit:][:alpha:]\.-]//g")
         echo "will build $VERSION"
         echo "configuration=$VERSION" >> $GITHUB_OUTPUT
         echo "CONFIGURATION=$VERSION" >> $GITHUB_ENV

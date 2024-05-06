@@ -1,5 +1,5 @@
 buildscript {
-    apply from: gradle.dolbyio.files.modules
+    apply from: gradle.extended.files.modules
 
     repositories {
         mavenLocal() // <- waiting for the managed device validation, forcing resolution first
@@ -8,26 +8,26 @@ buildscript {
         google()
     }
     dependencies {
-        classpath dolbyio.android.gradlePlugin
-        classpath dolbyio.nexus.gradlePlugin
-        classpath dolbyio.kotlin.gradlePlugin
-        classpath dolbyio.sonarqube.gradlePlugin
-        classpath dolbyio.license.gradlePlugin
-        classpath dolbyio.gradle.versions.plugin
-        classpath dolbyio.version.catalog.update.plugin
-        classpath dolbyio.hilt.gradle
-        classpath dolbyio.mkdocs.gradlePlugin
-        classpath dolbyio.dokka.gradlePlugin
-        classpath dolbyio.managed.device.gradlePlugin
-        classpath dolbyio.openstf.gradlePlugin
+        classpath additionals.android.gradlePlugin
+        classpath additionals.nexus.gradlePlugin
+        classpath additionals.kotlin.gradlePlugin
+        classpath additionals.sonarqube.gradlePlugin
+        classpath additionals.license.gradlePlugin
+        classpath additionals.gradle.versions.plugin
+        classpath additionals.version.catalog.update.plugin
+        classpath additionals.hilt.gradle
+        classpath additionals.mkdocs.gradlePlugin
+        classpath additionals.dokka.gradlePlugin
+        classpath additionals.managed.device.gradlePlugin
+        classpath additionals.openstf.gradlePlugin
     }
 }
 
 plugins {
-    alias(dolbyio.plugins.dokka)
-    alias(dolbyio.plugins.publish.nexus)
-    alias(dolbyio.plugins.managed.device) apply false
-    alias(dolbyio.plugins.openstf)
+    alias(additionals.plugins.dokka)
+    alias(additionals.plugins.publish.nexus)
+    alias(additionals.plugins.managed.device) apply false
+    alias(additionals.plugins.openstf)
 }
 
 allprojects {
@@ -42,33 +42,33 @@ subprojects {
     task allDeps(type: DependencyReportTask) {}
 
     if (isSourcesModule(it)) {
-        apply from: gradle.dolbyio.files.moduleSetup
+        apply from: gradle.extended.files.moduleSetup
     }
 }
 
 ext {
-    groupId = "io.dolby"
+    groupId = "eu.codlab"
     version = "0.0.0"
 
     pom = [
-        description: "Dolby.io Communications APIs library module",
+        description: "Gradle Extensions to ease integrations",
         inceptionYear: "${new Date().format("YYYY")}",
-        url: "https://github.com/voxeet/voxeet-sdk-android-gradle",
+        url: "https://github.com/the-inkwell/gradle-tools",
         license: [
             name: 'MIT License',
-            url: 'https://github.com/voxeet/voxeet-sdk-android-gradle/blob/main/LICENSE'
+            url: 'https://github.com/the-inkwell/gradle-tools/blob/main/LICENSE'
         ],
         developer: [
-            id: 'dolbyio',
-            name: 'Dolby.io',
-            email: 'support@dolby.io'
+            id: 'blip',
+            name: 'Kevin Le Perf',
+            email: 'codlabtech@gmail.com'
         ],
         scm: [
-            connection: 'scm:git:github.com/voxeet/voxeet-sdk-android-gradle.git',
-            developerConnection: 'scm:git:ssh://github.com/voxeet/voxeet-sdk-android-gradle.git',
-            url: 'https://github.com/voxeet/voxeet-sdk-android-gradle/tree/main'
+            connection: 'scm:git:github.com/the-inkwell/gradle-tools.git',
+            developerConnection: 'scm:git:ssh://github.com/the-inkwell/gradle-tools.git',
+            url: 'https://github.com/the-inkwell/gradle-tools/tree/main'
         ]
     ]
 }
 
-apply from: gradle.dolbyio.files.dependencyUpdates
+apply from: gradle.extended.files.dependencyUpdates

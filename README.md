@@ -1,8 +1,8 @@
 # Gradle Configurations
 
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fvoxeet%2Fvoxeet-sdk-android-gradle%2Fbadge%3Fref%3Dmain&style=flat)](https://actions-badge.atrox.dev/voxeet/voxeet-sdk-android-gradle/goto?ref=main)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fthe-inkwell%2Fgradle-tools%2Fbadge%3Fref%3Dmain&style=flat)](https://actions-badge.atrox.dev/the-inkwell/gradle-tools/goto?ref=main)
 
-[![GitHub release](https://img.shields.io/github/release/voxeet/voxeet-sdk-android-gradle.svg)](https://gitHub.com/voxeet/voxeet-sdk-android-gradle/releases/)
+[![GitHub release](https://img.shields.io/github/release/the-inkwell/gradle-tools.svg)](https://gitHub.com/the-inkwell/gradle-tools/releases/)
 
 
 Open Source configurations used on Android projects
@@ -15,18 +15,18 @@ Note : change the version to the specific tag, sha or branch you want to use
 ```groovy
 def version = 'main'
 
-apply from: "https://raw.githubusercontent.com/voxeet/voxeet-sdk-android-gradle/${version}/dolbyio.gradle"
+apply from: "https://raw.githubusercontent.com/the-inkwell/gradle-tools/${version}/extended.gradle"
 
 dependencyResolutionManagement {
     versionCatalogs {
-        dolbyio {
-            from(files(gradle.dolbyio.files.catalog))
+        additionals {
+            from(files(gradle.extended.files.catalog))
         }
     }
 }
 ```
 
-Note that if you already use a versionCatalogs, you'll need to copy the first line at the top of your gradle file and the `dolbyio{...}` block inside the **versionCatalogs**
+Note that if you already use a versionCatalogs, you'll need to copy the first line at the top of your gradle file and the `additionals{...}` block inside the **versionCatalogs**
 
 ## Use the configurations
 
@@ -40,14 +40,14 @@ For instance :
 
 ```groovy
 dependencies {
-  implementation dolbyio.androidx.appcompat
+  implementation additionals.androidx.appcompat
 }
 ```
 
 or for plugins :
 ```groovy
 plugins {
-  alias(dolbyio.plugins.dokka)
+  alias(additionals.plugins.dokka)
 }
 ```
 
@@ -55,7 +55,7 @@ plugins {
 
 In order for our projects to share most of the configuration like publishing, managing coverage and having lint validation, we are also providing those files. After your settings.gradle update, you then can use the following snippet anywhere required to use those files 
 
-### gradle.dolbyio.files.SomeName
+### gradle.extended.files.SomeName
 
 Where SomeName can be one of the following :
 
@@ -78,14 +78,14 @@ Those are example of what can be included
 
 ```groovy
 buildscript {
-  apply from: gradle.dolbyio.files.modules
+  apply from: gradle.extended.files.modules
 }
 
 ...
 
 plugins {
-  alias(dolbyio.plugins.dokka)
-  alias(dolbyio.plugins.publish.nexus)
+  alias(additionals.plugins.dokka)
+  alias(additionals.plugins.publish.nexus)
 }
 
 ...
@@ -94,13 +94,13 @@ plugins {
 subprojects {
   ...
   if (isSourcesModule(it)) {
-    apply from: gradle.dolbyio.files.moduleSetup
+    apply from: gradle.extended.files.moduleSetup
   }
 }
 ...
 
-apply from: gradle.dolbyio.files.jacocoProject
-apply from: gradle.dolbyio.files.dependencyUpdates
+apply from: gradle.extended.files.jacocoProject
+apply from: gradle.extended.files.dependencyUpdates
 
 //EOF
 ```
@@ -111,19 +111,19 @@ apply from: gradle.dolbyio.files.dependencyUpdates
 ...
 
 dependencies {
-    androidTestImplementation dolbyio.androidx.espresso.core
-    implementation dolbyio.eventbus
+    androidTestImplementation additionals.androidx.espresso.core
+    implementation additionals.eventbus
 }
 
 // if the project need publication. Note that it will then need to configure pom information
-apply from: gradle.dolbyio.files.publishing
+apply from: gradle.extended.files.publishing
 
 //EOF
 ```
 
 ## Try sample
 
-inside the sample/ folder, run `./gradlew tasks`, you will notice that the **sample/gradle/dolbyio** folder will populate itself, those are files and configuration files you then can use in your own project
+inside the sample/ folder, run `./gradlew tasks`, you will notice that the **sample/gradle/extended** folder will populate itself, those are files and configuration files you then can use in your own project
 
 ## Override in sample
 
@@ -145,7 +145,7 @@ It will then be used as "${prefix}${project.name}"
 
 ### Publishing
 
-In your submodule(s)'s build.gradle, use `apply from: gradle.dolbyio.files.publishing`
+In your submodule(s)'s build.gradle, use `apply from: gradle.extended.files.publishing`
 
 By default, the sources aren't part of the publication of libraries, however it's possible to have your library upload their sources alongside the artifacts. To do so, register a publishWithSources in the rootProject or project's ext holder :
 
@@ -163,17 +163,17 @@ Mandatory rootProject ext variables, for instance here are some values for one o
 ext {
   ...
   pom = [
-    description: "Dolby.io Communications APIs library module",
+    description: "Some header",
     inceptionYear: "${new Date().format("YYYY")}",
-    url: "https://github.com/voxeet/sdk-android-lib-promise",
+    url: "https://github.com/some/repo",
     license: [
       name: 'Apache License',
-      url: 'https://github.com/voxeet/sdk-android-lib-promise/blob/main/LICENSE'
+      url: 'https://github.com/som/repo/blob/main/LICENSE'
     ],
     developer: [
-      id: 'dolbyio',
-      name: 'Dolby.io',
-      email: 'support@dolby.io'
+      id: 'blip',
+      name: 'Kevin Le Perf',
+      email: 'codlabtech@gmail.com'
     ],
     scm: [
       connection: 'scm:git:github.com/voxeet/sdk-android-lib-promise.git',
@@ -186,7 +186,7 @@ ext {
 
 ## TODO
 
-Some project files still need to be changed so that their predefined values can be changed a bit more easily (specifically for non dolby.io project integration)
+Some project files still need to be changed so that their predefined values can be changed a bit more easily :
 
 - **publishing** The script should make the various optionals
 - **sonarqube** make the prefix as a variable from rootProject as well

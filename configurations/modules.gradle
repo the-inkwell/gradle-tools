@@ -10,4 +10,4 @@ ext.prop = { name, defValue ->
             ? rootProject.properties[name] : defValue
 }
 
-apply from: gradle.dolbyio.files.jacocoProject
+apply from: gradle.extended.files.jacocoProject

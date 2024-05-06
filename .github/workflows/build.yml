@@ -41,14 +41,14 @@ jobs:
       - name: Build and Install
         id: build
         run: |
-          ./gradlew -PDOLBYIO_GRADLE_VERSION_USED="$GITHUB_SHA" ktlint detekt --no-daemon
-          ./gradlew -PDOLBYIO_GRADLE_VERSION_USED="$GITHUB_SHA" jacocoProjectReport --no-daemon
-          ./gradlew -PDOLBYIO_GRADLE_VERSION_USED="$GITHUB_SHA" :library:assembleDebug publishToMavenLocal --no-daemon
+          ./gradlew -PGRADLE_EXTENDED_VERSION_USED="$GITHUB_SHA" ktlint detekt --no-daemon
+          ./gradlew -PGRADLE_EXTENDED_VERSION_USED="$GITHUB_SHA" jacocoProjectReport --no-daemon
+          ./gradlew -PGRADLE_EXTENDED_VERSION_USED="$GITHUB_SHA" :library:assembleDebug publishToMavenLocal --no-daemon
 
       - name: Doc
         id: doc
         run: |
-          ./gradlew -PDOLBYIO_GRADLE_VERSION_USED="$GITHUB_SHA" :library:dokkaHtml :dokkaGfmCollector :dokkaJavadocCollector --no-daemon
+          ./gradlew -PGRADLE_EXTENDED_VERSION_USED="$GITHUB_SHA" :library:dokkaHtml :dokkaGfmCollector :dokkaJavadocCollector --no-daemon
 
   release:
     runs-on: ubuntu-latest

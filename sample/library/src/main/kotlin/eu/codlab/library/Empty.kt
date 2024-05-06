@@ -1,4 +1,4 @@
-package io.dolby.library
+package eu.codlab.library
 
 /**
  * Some klass

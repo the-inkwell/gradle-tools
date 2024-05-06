@@ -5,8 +5,8 @@ versionCatalogUpdate {
     sortByKey = false
 
     versionCatalogs {
-        dolby {
-            catalogFile = file(gradle.dolbyio.files.catalog)
+        additionals {
+            catalogFile = file(gradle.extended.files.catalog)
         }
     }
 }

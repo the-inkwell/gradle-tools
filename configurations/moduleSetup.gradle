@@ -19,37 +19,37 @@ afterEvaluate { project ->
         setupCommonTasks(isAndroid)
         setupKapt(project)
 
-        apply from: gradle.dolbyio.files.sonarqube
-        apply from: gradle.dolbyio.files.jacoco
+        apply from: gradle.extended.files.sonarqube
+        apply from: gradle.extended.files.jacoco
     }
 
     if (isLibrary) {
-        apply from: gradle.dolbyio.files.license
+        apply from: gradle.extended.files.license
     }
 
     if (isLibrary && hasDokka) {
-        apply from: gradle.dolbyio.files.dokka
-        apply from: gradle.dolbyio.files.dokkaProject
+        apply from: gradle.extended.files.dokka
+        apply from: gradle.extended.files.dokkaProject
     }
 
-    apply from: gradle.dolbyio.files.ktlint
-    apply from: gradle.dolbyio.files.detekt
+    apply from: gradle.extended.files.ktlint
+    apply from: gradle.extended.files.detekt
 }
 
 def minSdk = project.ext.has("minSdkVersion")
         ? project.ext.minSdkVersion
-        : "${dolbyio.versions.minSdkVersion.get()}"
+        : "${additionals.versions.minSdkVersion.get()}"
 
 def setupModule(isAndroid, isAndroidComponent) {
-    def javaVersion = JavaVersion.toVersion(dolbyio.versions.java.get())
+    def javaVersion = JavaVersion.toVersion(additionals.versions.java.get())
 
     if (isAndroid) {
         android {
-            compileSdk Integer.parseInt(dolbyio.versions.compileSdkVersion.get())
+            compileSdk Integer.parseInt(additionals.versions.compileSdkVersion.get())
 
             defaultConfig {
-                minSdkVersion dolbyio.versions.minSdkVersion.get()
-                targetSdkVersion Integer.parseInt(dolbyio.versions.targetSdkVersion.get())
+                minSdkVersion additionals.versions.minSdkVersion.get()
+                targetSdkVersion Integer.parseInt(additionals.versions.targetSdkVersion.get())
 
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -100,7 +100,7 @@ def setupModule(isAndroid, isAndroidComponent) {
             }
 
             dependencies {
-                coreLibraryDesugaring dolbyio.desugarJdkLibs
+                coreLibraryDesugaring additionals.desugarJdkLibs
             }
 
             testOptions {
@@ -113,22 +113,22 @@ def setupModule(isAndroid, isAndroidComponent) {
         }
 
         dependencies {
-            androidTestImplementation dolbyio.androidx.test.rules
-            androidTestImplementation dolbyio.androidx.test.runner
-            androidTestImplementation dolbyio.androidx.test.ext.junit
-            androidTestImplementation dolbyio.androidx.espresso.core
-            androidTestImplementation dolbyio.kotlinx.coroutines.test
-            androidTestImplementation dolbyio.mockito.android
-            androidTestImplementation dolbyio.androidx.test.core.ktx
+            androidTestImplementation additionals.androidx.test.rules
+            androidTestImplementation additionals.androidx.test.runner
+            androidTestImplementation additionals.androidx.test.ext.junit
+            androidTestImplementation additionals.androidx.espresso.core
+            androidTestImplementation additionals.kotlinx.coroutines.test
+            androidTestImplementation additionals.mockito.android
+            androidTestImplementation additionals.androidx.test.core.ktx
 
-            testImplementation dolbyio.androidx.test.ext.junit
-            testImplementation dolbyio.junit.jupiter.api
-            testRuntimeOnly dolbyio.junit.jupiter.engine
-            testImplementation dolbyio.junit.jupiter.params
-            testRuntimeOnly dolbyio.junit.vintage.engine
-            testImplementation dolbyio.mockito.core
-            testImplementation dolbyio.mockito.kotlin
-            testImplementation dolbyio.kotlinx.coroutines.test
+            testImplementation additionals.androidx.test.ext.junit
+            testImplementation additionals.junit.jupiter.api
+            testRuntimeOnly additionals.junit.jupiter.engine
+            testImplementation additionals.junit.jupiter.params
+            testRuntimeOnly additionals.junit.vintage.engine
+            testImplementation additionals.mockito.core
+            testImplementation additionals.mockito.kotlin
+            testImplementation additionals.kotlinx.coroutines.test
         }
     } else {
         sourceCompatibility = javaVersion
@@ -154,7 +154,7 @@ def setupCommonTasks(isAndroid) {
         }
     }
 
-    def javaVersion = dolbyio.versions.java.get()
+    def javaVersion = additionals.versions.java.get()
     try {
         def klass = Class.forName("org.jetbrains.kotlin.gradle.tasks.KotlinCompile")
         tasks.withType(klass).configureEach {

@@ -1,4 +1,4 @@
-package io.dolby.sample
+package eu.codlab.sample
 
 /**
  * Some klass

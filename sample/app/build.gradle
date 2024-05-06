@@ -2,7 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "jvmCompat"
-    alias(dolbyio.plugins.managed.device)
+    alias(additionals.plugins.managed.device)
 }
 
 ext {
@@ -11,7 +11,7 @@ ext {
 }
 
 android {
-    namespace 'io.dolby.sample'
+    namespace 'eu.codlab.sample'
 
     flavorDimensions "flavors"
     productFlavors {
@@ -28,22 +28,22 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = dolbyio.versions.androidx.compose.compiler.get()
+        kotlinCompilerExtensionVersion = additionals.versions.androidx.compose.compiler.get()
     }
 }
 
 dependencies {
     implementation project(":library")
-    implementation(dolbyio.androidx.compose.runtime)
+    implementation(additionals.androidx.compose.runtime)
 
-    implementation(dolbyio.multiplatform.collapsing.toolbar)
-    implementation(dolbyio.multiplatform.file.access)
-    implementation(dolbyio.multiplatform.http.client)
-    implementation(dolbyio.multiplatform.permissions)
-    implementation(dolbyio.multiplatform.platform)
-    implementation(dolbyio.multiplatform.precompose)
-    implementation(dolbyio.multiplatform.safearea)
-    implementation(dolbyio.multiplatform.viewmodel)
-    implementation(dolbyio.multiplatform.widgets.compose)
-    implementation(dolbyio.multiplatform.string.fuzzywuzzy)
+    implementation(additionals.multiplatform.collapsing.toolbar)
+    implementation(additionals.multiplatform.file.access)
+    implementation(additionals.multiplatform.http.client)
+    implementation(additionals.multiplatform.permissions)
+    implementation(additionals.multiplatform.platform)
+    implementation(additionals.multiplatform.precompose)
+    implementation(additionals.multiplatform.safearea)
+    implementation(additionals.multiplatform.viewmodel)
+    implementation(additionals.multiplatform.widgets.compose)
+    implementation(additionals.multiplatform.string.fuzzywuzzy)
 }

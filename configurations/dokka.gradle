@@ -2,7 +2,7 @@ apply plugin: "org.jetbrains.dokka"
 
 configurations.forEach {
     if (it.name.matches(/dokka.*Plugin/)) {
-        dependencies.add(it.name, dolbyio.dokka.androidDocumentationPlugin)
-        dependencies.add(it.name, dolbyio.dokka.suppressUndocumentedPlugin)
+        dependencies.add(it.name, additionals.dokka.androidDocumentationPlugin)
+        dependencies.add(it.name, additionals.dokka.suppressUndocumentedPlugin)
     }
 }

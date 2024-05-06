@@ -2,17 +2,17 @@ plugins {
     id "com.android.library"
     id "kotlin-android"
     id "jvmCompat"
-    alias(dolbyio.plugins.managed.device)
+    alias(additionals.plugins.managed.device)
 }
 
 android {
-    namespace 'io.dolby.library'
+    namespace 'eu.codlab.library'
 }
 
 dependencies {
-    implementation dolbyio.androidx.core
-    implementation dolbyio.eventbus
-    implementation dolbyio.voxeet.promise
+    implementation additionals.androidx.core
+    implementation additionals.eventbus
+    implementation additionals.voxeet.promise
 }
 
-apply from: gradle.dolbyio.files.publishing
+apply from: gradle.extended.files.publishing
