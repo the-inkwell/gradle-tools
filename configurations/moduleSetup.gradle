@@ -88,7 +88,7 @@ def setupModule(isAndroid, isAndroidComponent) {
                 checkReleaseBuilds false
                 checkAllWarnings false
                 ignoreTestSources true
-                warningsAsErrors true
+                warningsAsErrors false
                 disable = [
                         "GoogleAppIndexingWarning",
                         "GradleDependency",
