@@ -101,8 +101,8 @@ publish-nexus = "1.3.0"
 # Set of components & tools
 multiplatform-precompose = "1.5.5"
 codlab-libraries = "1.14.2"
-codlab-libraries-widget-compose = "1.15.0"
-codlab-libraries-safearea = "1.15.0"
+codlab-libraries-widget-compose = "1.16.0"
+codlab-libraries-safearea = "1.17.0"
 versions = "0.47.0"
 
 # Multiplatform
