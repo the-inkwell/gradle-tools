@@ -65,7 +65,7 @@ androidx-datastore = "1.1.0"
 androidx-core-splashscreen = "1.0.0"
 material = "1.7.0"
 # Compose
-androidx-compose = "1.5.4"
+androidx-compose = "1.6.2"
 jetbrains-compose = "1.6.1"
 androidx-compose-material3 = "1.1.2"
 # @keep
