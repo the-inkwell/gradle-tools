@@ -1,6 +1,6 @@
 dependencyResolutionManagement {
     versionCatalogs {
-        libs {
+        ktPluginsLibs {
             from(files("../libs.versions.toml"))
         }
     }

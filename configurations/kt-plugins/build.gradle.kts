@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.kotlin.gradlePlugin)
+    implementation(ktPluginsLibs.kotlin.gradlePlugin)
 }
