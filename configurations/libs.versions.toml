@@ -103,6 +103,7 @@ multiplatform-precompose = "1.5.5"
 codlab-libraries = "1.14.2"
 codlab-libraries-widget-compose = "1.16.0"
 codlab-libraries-safearea = "1.17.0"
+codlab-libraries-viewmodel = "1.15.0"
 versions = "0.47.0"
 
 # Multiplatform
@@ -263,7 +264,7 @@ multiplatform-http-client = { module = "eu.codlab:kotlin-http-client", version.r
 multiplatform-platform = { module = "eu.codlab:kotlin-platform", version.ref = "codlab-libraries" }
 multiplatform-precompose = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose" }
 multiplatform-permissions = { module = "eu.codlab:kotlin-permissions", version.ref = "codlab-libraries" }
-multiplatform-viewmodel = { module = "eu.codlab:kotlin-viewmodel", version.ref = "codlab-libraries" }
+multiplatform-viewmodel = { module = "eu.codlab:kotlin-viewmodel", version.ref = "codlab-libraries-viewmodel" }
 multiplatform-viewpager = { module = "eu.codlab:kotlin-viewpager", version.ref = "codlab-libraries" }
 multiplatform-maps-compose = { module = "eu.codlab:kotlin-moko-maps-compose", version.ref = "codlab-libraries" }
 multiplatform-openstf-api = { module = "eu.codlab:kotlin-openstf-api", version.ref = "codlab-libraries" }
