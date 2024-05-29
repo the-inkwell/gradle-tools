@@ -103,7 +103,7 @@ multiplatform-precompose = "1.5.5"
 codlab-libraries = "1.14.2"
 codlab-libraries-widget-compose = "1.16.0"
 codlab-libraries-safearea = "1.17.0"
-codlab-libraries-viewmodel = "1.15.0"
+codlab-libraries-viewmodel = "1.15.1"
 versions = "0.47.0"
 
 # Multiplatform
