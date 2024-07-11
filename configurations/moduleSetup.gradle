@@ -12,6 +12,9 @@ afterEvaluate { project ->
     def isLibrary = project.plugins.hasPlugin("java-library") ||
             project.plugins.hasPlugin("com.android.library")
 
+    def hasSonarqube = project.plugins.hasPlugin("org.sonarqube")
+    def hasLicense = project.plugins.hasPlugin("com.jaredsburrows.license")
+
     def hasDokka = rootProject.plugins.hasPlugin("org.jetbrains.dokka")
 
     if (isAndroid || isJava) {
@@ -19,11 +22,13 @@ afterEvaluate { project ->
         setupCommonTasks(isAndroid)
         setupKapt(project)
 
-        apply from: gradle.extended.files.sonarqube
+        if (hasSonarqube) {
+            apply from: gradle.extended.files.sonarqube
+        }
         apply from: gradle.extended.files.jacoco
     }
 
-    if (isLibrary) {
+    if (isLibrary && hasLicense) {
         apply from: gradle.extended.files.license
     }
 
