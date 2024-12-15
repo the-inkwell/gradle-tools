@@ -1,6 +1,6 @@
 [versions]
 # Gradle plugins
-androidGradlePlugin = "8.4.1"
+androidGradlePlugin = "8.6.1"
 gradleNexusPlugin = "2.3.1"
 sonarqubeGradlePlugin = "2.8"
 licenseGradlePlugin = "0.9.0"
@@ -9,8 +9,8 @@ versionCatalogUpdatePlugin = "0.7.0"
 mkdocsGradlePlugin = "3.0.0"
 # Expected Android SDK
 minSdkVersion = "24"
-targetSdkVersion = "34"
-compileSdkVersion = "34"
+targetSdkVersion = "35"
+compileSdkVersion = "35"
 cmakeVersion = "3.22.1"
 ndkVersion = "23.0.7599858"
 # Java information
@@ -22,9 +22,9 @@ dokka-supress-undocumented = "1.1"
 detekt = "1.21.0"
 ktlint = "1.2.1"
 # Kotlin
-kotlin = "2.0.0"
+kotlin = "2.0.20"
 kotlin-ksp = "1.9.23-1.0.19"
-kotlinx-coroutines = "1.8.0"
+kotlinx-coroutines = "1.9.0"
 kotlinx = "1.6.3"
 # Networking
 okhttp = "4.10.0"
@@ -37,7 +37,7 @@ moshi = "1.14.0"
 moshix = "0.19.0"
 # Testing
 junit = "4.13.2"
-junit-jupiter = "5.9.1"
+junit-jupiter = "5.10.1"
 junit-servers = "2.1.0"
 servlet = "2.5"
 truth = "1.1.3"
@@ -45,33 +45,33 @@ mockito-kotlin = "4.1.0"
 mockito-core = "4.11.0"
 mockito-inline = "4.11.0"
 mockito-android = "4.11.0"
-androidx-test = "1.4.0"
-androidx-test-ext-junit = "1.1.3"
+androidx-test = "1.6.1"
+androidx-test-ext-junit = "1.2.1"
 espresso = "3.4.0"
 turbine = "0.12.1"
 # AndroidX/Material
-androidx-activity = "1.6.1"
-androidx-annotation = "1.5.0"
-androidx-core = "1.9.0"
-androidx-recyclerview = "1.2.1"
-androidx-appcompat = "1.5.1"
-androidx-constraintLayout = "2.1.4"
+androidx-activity = "1.9.3"
+androidx-annotation = "1.9.1"
+androidx-core = "1.15.0"
+androidx-recyclerview = "1.3.2"
+androidx-appcompat = "1.7.0"
+androidx-constraintLayout = "2.2.0"
 androidx-coordinatorLayout = "1.2.0"
-androidx-lifecycle = "2.5.1"
-androidx-lifecycle-runtime-compose = "2.6.0-alpha01"
+androidx-lifecycle = "2.8.7"
+androidx-lifecycle-runtime-compose = "2.8.7"
 androidx-multidex = "2.0.1"
-androidx-navigation = "2.5.2"
-androidx-datastore = "1.1.0"
-androidx-core-splashscreen = "1.0.0"
+androidx-navigation = "2.8.4"
+androidx-datastore = "1.1.1"
+androidx-core-splashscreen = "1.0.1"
 material = "1.7.0"
 # Compose
-androidx-compose = "1.6.10"
-jetbrains-compose = "1.6.10"
+androidx-compose = "1.7.5"
+jetbrains-compose = "1.7.1"
 androidx-compose-material3 = "1.1.2"
 # @keep
 androidx-compose-compiler = "1.5.11"
 androidx-hilt-navigation-compose = "1.0.0"
-accompanist = "0.27.0"
+accompanist = "0.30.1"
 destinations-compose = "1.7.22-beta"
 toolbar-compose = "2.3.5"
 # Voxeet
@@ -99,7 +99,8 @@ coil = "2.2.2"
 publish-nexus = "1.3.0"
 
 # Set of components & tools
-multiplatform-precompose = "1.6.1"
+multiplatform-precompose = "1.7.0-alpha01"
+multiplatform-precompose-web = "1.7.0-alpha03"
 multiplatform-precompose-hold = "1.5.5"
 codlab-libraries = "1.14.2"
 codlab-libraries-widget-compose = "1.16.0"
@@ -109,7 +110,7 @@ codlab-libraries-permissions = "1.16.0"
 versions = "0.47.0"
 
 # Multiplatform
-moko-resources = "0.23.0"
+moko-resources = "0.24.1"
 multiplatform-buildkonfig = "0.13.3"
 fuzzywuzzy-multiplatform = "0.1.1"
 preferences-library = "1.0.0"
@@ -265,6 +266,7 @@ multiplatform-file-access = { module = "eu.codlab:kotlin-file-access", version.r
 multiplatform-http-client = { module = "eu.codlab:kotlin-http-client", version.ref = "codlab-libraries" }
 multiplatform-platform = { module = "eu.codlab:kotlin-platform", version.ref = "codlab-libraries" }
 multiplatform-precompose = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose" }
+multiplatform-precompose-web = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose-web" }
 multiplatform-permissions = { module = "eu.codlab:kotlin-permissions", version.ref = "codlab-libraries-permissions" }
 multiplatform-viewmodel = { module = "eu.codlab:kotlin-viewmodel", version.ref = "codlab-libraries-viewmodel" }
 multiplatform-viewpager = { module = "eu.codlab:kotlin-viewpager", version.ref = "codlab-libraries" }
