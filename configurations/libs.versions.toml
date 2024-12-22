@@ -107,6 +107,7 @@ codlab-libraries-widget-compose = "1.16.0"
 codlab-libraries-safearea = "1.17.0"
 codlab-libraries-viewmodel = "1.15.1"
 codlab-libraries-permissions = "1.16.0"
+codlab-libraries-http = "1.16.0"
 versions = "0.47.0"
 
 # Multiplatform
@@ -263,7 +264,7 @@ multiplatform-moko-resources-ext = { module = "eu.codlab:kotlin-moko-resources-e
 multiplatform-kamel-image-ext = { module = "eu.codlab:kotlin-kamel-image-ext", version.ref = "codlab-libraries" }
 multiplatform-widgets-compose = { module = "eu.codlab:kotlin-widgets-compose", version.ref = "codlab-libraries-widget-compose" }
 multiplatform-file-access = { module = "eu.codlab:kotlin-file-access", version.ref = "codlab-libraries" }
-multiplatform-http-client = { module = "eu.codlab:kotlin-http-client", version.ref = "codlab-libraries" }
+multiplatform-http-client = { module = "eu.codlab:kotlin-http-client", version.ref = "codlab-libraries-http" }
 multiplatform-platform = { module = "eu.codlab:kotlin-platform", version.ref = "codlab-libraries" }
 multiplatform-precompose = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose" }
 multiplatform-precompose-web = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose-web" }
