@@ -22,7 +22,7 @@ dokka-supress-undocumented = "1.1"
 detekt = "1.21.0"
 ktlint = "1.2.1"
 # Kotlin
-kotlin = "2.0.20"
+kotlin = "2.1.0"
 kotlin-ksp = "1.9.23-1.0.19"
 kotlinx-coroutines = "1.9.0"
 kotlinx = "1.6.3"
