@@ -46,4 +46,5 @@ dependencies {
     implementation(additionals.multiplatform.viewmodel)
     implementation(additionals.multiplatform.widgets.compose)
     implementation(additionals.multiplatform.string.fuzzywuzzy)
+    implementation(additionals.multiplatform.sentry)
 }

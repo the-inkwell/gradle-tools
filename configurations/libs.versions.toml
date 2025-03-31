@@ -83,9 +83,7 @@ hilt = "2.44"
 koin = "3.5.6"
 # Facebook
 facebook-soloader = "0.10.4"
-# Logs
 # @pin
-sentry = "1.7.21"
 slf4j = "2.0.3"
 # Other
 eventbus = "3.3.1"
@@ -102,6 +100,7 @@ publish-nexus = "1.3.0"
 multiplatform-precompose = "1.7.0-alpha01"
 multiplatform-precompose-web = "1.7.0-alpha03"
 multiplatform-precompose-hold = "1.5.5"
+multiplatform-sentry = "0.0.1"
 codlab-libraries = "1.14.2"
 codlab-libraries-http = "1.18.0"
 codlab-libraries-widget-compose = "1.16.0"
@@ -246,7 +245,6 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 # Logs
-sentry = { module = "io.sentry:sentry-android", version.ref = "sentry" }
 slf4j = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 # Other
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
@@ -262,6 +260,7 @@ multiplatform-safearea = { module = "eu.codlab:kotlin-safearea", version.ref = "
 multiplatform-collapsing-toolbar = { module = "eu.codlab:kotlin-collapsing-toolbar", version.ref = "codlab-libraries" }
 multiplatform-moko-resources-ext = { module = "eu.codlab:kotlin-moko-resources-ext", version.ref = "codlab-libraries" }
 multiplatform-kamel-image-ext = { module = "eu.codlab:kotlin-kamel-image-ext", version.ref = "codlab-libraries" }
+multiplatform-sentry = { module = "eu.codlab:kotlin-sentry", version.ref = "multiplatform-sentry" }
 multiplatform-widgets-compose = { module = "eu.codlab:kotlin-widgets-compose", version.ref = "codlab-libraries-widget-compose" }
 multiplatform-file-access = { module = "eu.codlab:kotlin-file-access", version.ref = "codlab-libraries" }
 multiplatform-http-client = { module = "eu.codlab:kotlin-http-client", version.ref = "codlab-libraries-http" }
