@@ -41,19 +41,21 @@ afterEvaluate { project ->
     apply from: gradle.extended.files.detekt
 }
 
-def minSdk = project.ext.has("minSdkVersion")
-        ? project.ext.minSdkVersion
-        : "${additionals.versions.minSdkVersion.get()}"
-
 def setupModule(isAndroid, isAndroidComponent) {
-    def javaVersion = JavaVersion.toVersion(additionals.versions.java.get())
+    def minSdkValue = project.ext.has("minSdkVersion")
+            ? project.ext.minSdkVersion
+            : Integer.parseInt("${additionals.versions.minSdkVersion.get()}")
+    def javaVersion = project.ext.has("javaVersion")
+            ? "${project.ext.javaVersion}"
+            : additionals.versions.java.get()
+    def javaVersionObject = JavaVersion.toVersion(javaVersion)
 
     if (isAndroid) {
         android {
             compileSdk Integer.parseInt(additionals.versions.compileSdkVersion.get())
 
             defaultConfig {
-                minSdkVersion additionals.versions.minSdkVersion.get()
+                minSdkVersion minSdkValue
                 targetSdkVersion Integer.parseInt(additionals.versions.targetSdkVersion.get())
 
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -72,8 +74,8 @@ def setupModule(isAndroid, isAndroidComponent) {
 
             compileOptions {
                 coreLibraryDesugaringEnabled true
-                sourceCompatibility javaVersion
-                targetCompatibility javaVersion
+                sourceCompatibility javaVersionObject
+                targetCompatibility javaVersionObject
             }
 
             kotlin {
@@ -136,8 +138,8 @@ def setupModule(isAndroid, isAndroidComponent) {
             testImplementation additionals.kotlinx.coroutines.test
         }
     } else {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility = javaVersionObject
+        targetCompatibility = javaVersionObject
 
         test {
             maxParallelForks = Runtime.runtime.availableProcessors() - 1
@@ -159,7 +161,10 @@ def setupCommonTasks(isAndroid) {
         }
     }
 
-    def javaVersion = additionals.versions.java.get()
+    def javaVersion = project.ext.has("javaVersion")
+            ? "${project.ext.javaVersion}"
+            : additionals.versions.java.get()
+
     try {
         def klass = Class.forName("org.jetbrains.kotlin.gradle.tasks.KotlinCompile")
         tasks.withType(klass).configureEach {
@@ -169,6 +174,7 @@ def setupCommonTasks(isAndroid) {
         }
     } catch (Throwable ignored) {
         // nothing
+        ignored
     }
 
     tasks.withType(JavaCompile).configureEach {

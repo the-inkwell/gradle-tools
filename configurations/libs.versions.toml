@@ -1,6 +1,6 @@
 [versions]
 # Gradle plugins
-androidGradlePlugin = "8.9.0"
+androidGradlePlugin = "8.9.1"
 gradleNexusPlugin = "2.3.1"
 sonarqubeGradlePlugin = "2.8"
 licenseGradlePlugin = "0.9.0"
@@ -121,6 +121,9 @@ libraries-report = "12.0.0-b02"
 
 # Firebase
 firebase-bom = "32.5.0"
+
+# Preview in IntelliJ
+hotpreview = "0.1.6"
 
 [libraries]
 # Gradle plugins
@@ -279,6 +282,9 @@ multiplatform-string-fuzzywuzzy = { module = "eu.codlab:fuzzywuzzy-kotlin", vers
 managed-device-gradlePlugin = { module = "eu.codlab.gradle.plugin.managed-device:eu.codlab.gradle.plugin.managed-device.gradle.plugin", version.ref = "codlab-libraries" }
 openstf-gradlePlugin = { module = "eu.codlab.gradle.plugin.openstf-gradle:eu.codlab.gradle.plugin.openstf-gradle.gradle.plugin", version.ref = "codlab-libraries" }
 preferences-library = { module = "me.zhanghai.compose.preference:library", version.ref = "preferences-library" }
+
+# Preview in the IDE
+hotpreview = { group = "de.drick.compose", name = "hotpreview", version.ref = "hotpreview" }
 
 # License reporting
 libraries-report = { group = "com.mikepenz", name = "aboutlibraries-core", version.ref = "libraries-report" }
