@@ -106,7 +106,7 @@ codlab-libraries-http = "1.18.0"
 codlab-libraries-widget-compose = "1.16.0"
 codlab-libraries-safearea = "1.17.0"
 codlab-libraries-viewmodel = "1.15.1"
-codlab-libraries-permissions = "1.16.0"
+codlab-libraries-permissions = "1.17.0-alpha0"
 codlab-libraries-weather = "0.0.10"
 versions = "0.47.0"
 
