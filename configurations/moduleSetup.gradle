@@ -42,11 +42,11 @@ afterEvaluate { project ->
 }
 
 def setupModule(isAndroid, isAndroidComponent) {
-    def minSdkValue = project.ext.has("minSdkVersion")
-            ? project.ext.minSdkVersion
+    def minSdkValue = rootProject.ext.has("minSdkVersion")
+            ? rootProject.ext.minSdkVersion
             : Integer.parseInt("${additionals.versions.minSdkVersion.get()}")
-    def javaVersion = project.ext.has("javaVersion")
-            ? "${project.ext.javaVersion}"
+    def javaVersion = rootProject.ext.has("javaVersion")
+            ? "${rootProject.ext.javaVersion}"
             : additionals.versions.java.get()
     def javaVersionObject = JavaVersion.toVersion(javaVersion)
 
@@ -150,7 +150,7 @@ def setupModule(isAndroid, isAndroidComponent) {
 
 def setupCommonTasks(isAndroid) {
     if (isAndroid) {
-        def unitTestsTasks = project.ext.has("optionalUnitTestTasks") ? project.ext.optionalUnitTestTasks : ["testDebugUnitTest"]
+        def unitTestsTasks = rootProject.ext.has("optionalUnitTestTasks") ? rootProject.ext.optionalUnitTestTasks : ["testDebugUnitTest"]
 
         tasks.register("unitTest") { task ->
             task.dependsOn(unitTestsTasks)
@@ -161,8 +161,8 @@ def setupCommonTasks(isAndroid) {
         }
     }
 
-    def javaVersion = project.ext.has("javaVersion")
-            ? "${project.ext.javaVersion}"
+    def javaVersion = rootProject.ext.has("javaVersion")
+            ? "${rootProject.ext.javaVersion}"
             : additionals.versions.java.get()
 
     try {
