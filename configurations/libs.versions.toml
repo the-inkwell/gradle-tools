@@ -103,13 +103,13 @@ multiplatform-precompose-web = "1.7.0-alpha03"
 multiplatform-precompose-hold = "1.5.5"
 multiplatform-sentry = "0.0.2"
 codlab-libraries = "1.14.2"
-codlab-libraries-file-access = "1.16.0"
+codlab-libraries-file-access = "1.16.1"
 codlab-libraries-http = "1.18.0"
 codlab-libraries-widget-compose = "1.16.0"
 codlab-libraries-safearea = "1.17.0"
 codlab-libraries-viewmodel = "1.15.1"
-codlab-libraries-permissions = "1.17.0-alpha0"
-codlab-libraries-weather = "0.1.0"
+codlab-libraries-permissions = "1.17.0-alpha1"
+codlab-libraries-weather = "0.1.1"
 versions = "0.47.0"
 
 # Multiplatform
@@ -276,6 +276,15 @@ multiplatform-platform = { module = "eu.codlab:kotlin-platform", version.ref = "
 multiplatform-precompose = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose" }
 multiplatform-precompose-web = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose-web" }
 multiplatform-permissions = { module = "eu.codlab:kotlin-permissions", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-bluetooth = { module = "eu.codlab:kotlin-permissions-bluetooth", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-camera = { module = "eu.codlab:kotlin-permissions-camera", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-contacts = { module = "eu.codlab:kotlin-permissions-contacts", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-gallery = { module = "eu.codlab:kotlin-permissions-gallery", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-location = { module = "eu.codlab:kotlin-permissions-location", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-microphone = { module = "eu.codlab:kotlin-permissions-microphone", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-motion = { module = "eu.codlab:kotlin-permissions-motion", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-notifications = { module = "eu.codlab:kotlin-permissions-notifications", version.ref = "codlab-libraries-permissions" }
+multiplatform-permissions-storage = { module = "eu.codlab:kotlin-permissions-storage", version.ref = "codlab-libraries-permissions" }
 multiplatform-weather-common-compose = { module = "eu.codlab:kotlin-weather-common-compose", version.ref = "codlab-libraries-weather" }
 multiplatform-weather-openweathermap = { module = "eu.codlab:kotlin-openweathermap", version.ref = "codlab-libraries-weather" }
 multiplatform-weather-google-maps = { module = "eu.codlab:kotlin-google-maps", version.ref = "codlab-libraries-weather"}
