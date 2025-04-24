@@ -103,12 +103,13 @@ multiplatform-precompose-web = "1.7.0-alpha03"
 multiplatform-precompose-hold = "1.5.5"
 multiplatform-sentry = "0.0.2"
 codlab-libraries = "1.14.2"
+codlab-libraries-file-access = "1.16.0"
 codlab-libraries-http = "1.18.0"
 codlab-libraries-widget-compose = "1.16.0"
 codlab-libraries-safearea = "1.17.0"
 codlab-libraries-viewmodel = "1.15.1"
 codlab-libraries-permissions = "1.17.0-alpha0"
-codlab-libraries-weather = "0.0.10"
+codlab-libraries-weather = "0.1.0"
 versions = "0.47.0"
 
 # Multiplatform
@@ -269,14 +270,16 @@ multiplatform-moko-resources-ext = { module = "eu.codlab:kotlin-moko-resources-e
 multiplatform-kamel-image-ext = { module = "eu.codlab:kotlin-kamel-image-ext", version.ref = "codlab-libraries" }
 multiplatform-sentry = { module = "eu.codlab:kotlin-sentry", version.ref = "multiplatform-sentry" }
 multiplatform-widgets-compose = { module = "eu.codlab:kotlin-widgets-compose", version.ref = "codlab-libraries-widget-compose" }
-multiplatform-file-access = { module = "eu.codlab:kotlin-file-access", version.ref = "codlab-libraries" }
+multiplatform-file-access = { module = "eu.codlab:kotlin-file-access", version.ref = "codlab-libraries-file-access" }
 multiplatform-http-client = { module = "eu.codlab:kotlin-http-client", version.ref = "codlab-libraries-http" }
 multiplatform-platform = { module = "eu.codlab:kotlin-platform", version.ref = "codlab-libraries" }
 multiplatform-precompose = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose" }
 multiplatform-precompose-web = { module = "moe.tlaster:precompose", version.ref = "multiplatform-precompose-web" }
 multiplatform-permissions = { module = "eu.codlab:kotlin-permissions", version.ref = "codlab-libraries-permissions" }
-multiplatform-weather = { module = "eu.codlab:kotlin-openweathermap", version.ref = "codlab-libraries-weather" }
-multiplatform-weather-compose = { module = "eu.codlab:kotlin-openweathermap-compose", version.ref = "codlab-libraries-weather" }
+multiplatform-weather-common-compose = { module = "eu.codlab:kotlin-weather-common-compose", version.ref = "codlab-libraries-weather" }
+multiplatform-weather-openweathermap = { module = "eu.codlab:kotlin-openweathermap", version.ref = "codlab-libraries-weather" }
+multiplatform-weather-google-maps = { module = "eu.codlab:kotlin-google-maps", version.ref = "codlab-libraries-weather"}
+multiplatform-weather-xweather = { module = "eu.codlab:kotlin-xweather", version.ref = "codlab-libraries-weather"}
 multiplatform-viewmodel = { module = "eu.codlab:kotlin-viewmodel", version.ref = "codlab-libraries-viewmodel" }
 multiplatform-viewpager = { module = "eu.codlab:kotlin-viewpager", version.ref = "codlab-libraries" }
 multiplatform-maps-compose = { module = "eu.codlab:kotlin-moko-maps-compose", version.ref = "codlab-libraries" }
