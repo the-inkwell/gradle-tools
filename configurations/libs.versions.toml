@@ -8,7 +8,7 @@ gradleVersionsPlugin = "0.43.0"
 versionCatalogUpdatePlugin = "0.7.0"
 mkdocsGradlePlugin = "3.0.0"
 # Expected Android SDK
-minSdkVersion = "28"
+minSdkVersion = "24"
 targetSdkVersion = "35"
 compileSdkVersion = "35"
 cmakeVersion = "3.22.1"
