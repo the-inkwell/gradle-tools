@@ -42,8 +42,8 @@ afterEvaluate { project ->
 }
 
 def setupModule(isAndroid, isAndroidComponent) {
-    def minSdkValue = project.ext.has("minSdkVersion")
-            ? project.ext.minSdkVersion
+    def minSdkValue = rootProject.ext.has("minSdkVersion")
+            ? rootProject.ext.minSdkVersion
             : Integer.parseInt("${additionals.versions.minSdkVersion.get()}")
     def javaVersion = project.ext.has("javaVersion")
             ? "${project.ext.javaVersion}"
