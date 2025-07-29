@@ -1,4 +1,4 @@
-def version = 'v1.16.1'
+def version = 'v1.16.2'
 
 if (settings.ext.find("GRADLE_EXTENDED_VERSION_USED")) {
     version = GRADLE_EXTENDED_VERSION_USED
