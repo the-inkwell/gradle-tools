@@ -1,6 +1,6 @@
 [versions]
 # Gradle plugins
-androidGradlePlugin = "8.9.1"
+androidGradlePlugin = "8.10.1"
 gradleNexusPlugin = "2.3.1"
 sonarqubeGradlePlugin = "2.8"
 licenseGradlePlugin = "0.9.0"
@@ -9,8 +9,8 @@ versionCatalogUpdatePlugin = "0.7.0"
 mkdocsGradlePlugin = "3.0.0"
 # Expected Android SDK
 minSdkVersion = "24"
-targetSdkVersion = "35"
-compileSdkVersion = "35"
+targetSdkVersion = "36"
+compileSdkVersion = "36"
 cmakeVersion = "3.22.1"
 ndkVersion = "23.0.7599858"
 # Java information
@@ -22,8 +22,8 @@ dokka-supress-undocumented = "1.1"
 detekt = "1.21.0"
 ktlint = "1.7.1"
 # Kotlin
-kotlin = "2.1.20"
-kotlin-ksp = "2.1.20-2.0.1"
+kotlin = "2.2.10"
+kotlin-ksp = "2.2.10-2.0.2"
 kotlinx-coroutines = "1.9.0"
 kotlinx-datetime="0.7.1"
 kotlinx = "1.6.3"
@@ -68,7 +68,7 @@ androidx-core-splashscreen = "1.0.1"
 material = "1.7.0"
 # Compose
 androidx-compose = "1.7.5"
-jetbrains-compose = "1.7.1"
+jetbrains-compose = "1.8.2"
 androidx-compose-material3 = "1.1.2"
 # @keep
 androidx-compose-compiler = "1.5.11"
