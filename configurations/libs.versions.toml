@@ -25,7 +25,7 @@ ktlint = "1.7.1"
 kotlin = "2.2.10"
 kotlin-ksp = "2.2.10-2.0.2"
 kotlinx-coroutines = "1.9.0"
-kotlinx-datetime="0.7.1"
+kotlinx-datetime = "0.7.1"
 kotlinx = "1.6.3"
 # Networking
 okhttp = "4.10.0"
@@ -68,6 +68,7 @@ androidx-core-splashscreen = "1.0.1"
 material = "1.7.0"
 # Compose
 androidx-compose = "1.7.5"
+androidx-compose-icon = "1.7.3"
 jetbrains-compose = "1.8.2"
 androidx-compose-material3 = "1.1.2"
 # @keep
@@ -224,6 +225,8 @@ androidx-compose-animation = { module = "androidx.compose.animation:animation", 
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose" }
+androidx-compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "androidx-compose-icon" }
+
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidx-compose-material3" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
@@ -289,8 +292,8 @@ multiplatform-permissions-notifications = { module = "eu.codlab:kotlin-permissio
 multiplatform-permissions-storage = { module = "eu.codlab:kotlin-permissions-storage", version.ref = "codlab-libraries-permissions" }
 multiplatform-weather-common-compose = { module = "eu.codlab:kotlin-weather-common-compose", version.ref = "codlab-libraries-weather" }
 multiplatform-weather-openweathermap = { module = "eu.codlab:kotlin-openweathermap", version.ref = "codlab-libraries-weather" }
-multiplatform-weather-google-maps = { module = "eu.codlab:kotlin-google-maps", version.ref = "codlab-libraries-weather"}
-multiplatform-weather-xweather = { module = "eu.codlab:kotlin-xweather", version.ref = "codlab-libraries-weather"}
+multiplatform-weather-google-maps = { module = "eu.codlab:kotlin-google-maps", version.ref = "codlab-libraries-weather" }
+multiplatform-weather-xweather = { module = "eu.codlab:kotlin-xweather", version.ref = "codlab-libraries-weather" }
 multiplatform-viewmodel = { module = "eu.codlab:kotlin-viewmodel", version.ref = "codlab-libraries-viewmodel" }
 multiplatform-viewpager = { module = "eu.codlab:kotlin-viewpager", version.ref = "codlab-libraries" }
 multiplatform-maps-compose = { module = "eu.codlab:kotlin-moko-maps-compose", version.ref = "codlab-libraries" }
