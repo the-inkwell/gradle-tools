@@ -1,6 +1,6 @@
 [versions]
 # Gradle plugins
-androidGradlePlugin = "8.10.1"
+androidGradlePlugin = "8.13.1"
 gradleNexusPlugin = "2.3.1"
 sonarqubeGradlePlugin = "2.8"
 licenseGradlePlugin = "0.9.0"
@@ -70,7 +70,7 @@ material = "1.7.0"
 # Compose
 androidx-compose = "1.7.5"
 androidx-compose-icon = "1.7.3"
-jetbrains-compose = "1.8.2"
+jetbrains-compose = "1.9.1"
 androidx-compose-material3 = "1.1.2"
 # @keep
 androidx-compose-compiler = "1.5.11"
