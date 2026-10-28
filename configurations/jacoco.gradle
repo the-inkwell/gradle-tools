@@ -1,25 +1,80 @@
 apply plugin: 'jacoco'
 
-def connectedDevices = (rootProject.properties['CONNECTED_DEVICES'] ?: "0").trim() as Integer
-
-def unitTestsTasks = project.ext.has("optionalUnitTestTasks") ? project.ext.optionalUnitTestTasks : [ "testDebugUnitTest" ]
-def androidTestsTasks = project.ext.has("optionalAndroidTestTasks") ? project.ext.optionalAndroidTestTasks : [ "createDebugCoverageReport" ]
-
-def dependsOn = connectedDevices > 0 ? unitTestsTasks + androidTestsTasks : unitTestsTasks
-
-// Add support for kotlin multiplatform's check task
-if (project.tasks.findByName("check")) {
-    dependsOn += "check"
+jacoco {
+    toolVersion = additionals.versions.jacoco.get()
 }
 
-task jacocoModuleReport(type: JacocoReport, dependsOn: dependsOn) {
+def isMultiplatform = project.plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")
+// the KMP Android library has a single variant, its test tasks are not named after a build type
+def isAndroidMultiplatformLibrary = project.plugins.hasPlugin("com.android.kotlin.multiplatform.library")
+def isJava = project.plugins.hasPlugin("java")
+// the JVM target of a KMP module runs the common tests on the host: preferred over the Android host
+// tests, their classes being compiled from the same sources (JaCoCo rejects duplicated classes)
+def hasJvmTarget = isMultiplatform && project.tasks.findByName("jvmTest") != null
+
+// Used by AGP to instrument the coverage-enabled variant (and its androidTest dependencies)
+if (project.extensions.findByName("android")) {
+    android.testCoverage.jacocoVersion = additionals.versions.jacoco.get()
+} else if (isAndroidMultiplatformLibrary) {
+    kotlin.extensions.getByName("android").testCoverage.jacocoVersion = additionals.versions.jacoco.get()
+}
+
+// Number of connected Android devices: the instrumented tests only run when there is at least one.
+// Not detected here on purpose (no adb call at configuration time): the caller passes it.
+def connectedDevices = (rootProject.findProperty('CONNECTED_DEVICES') ?: "0").trim() as Integer
+
+def defaultUnitTestTasks = hasJvmTarget ? ["jvmTest"]
+        : isAndroidMultiplatformLibrary ? ["testAndroidHostTest"]
+        : isJava ? ["test"]
+        : ["testDebugUnitTest"]
+def unitTestsTasks = project.ext.has("optionalUnitTestTasks") ? project.ext.optionalUnitTestTasks : defaultUnitTestTasks
+
+// Derive the AGP variant this report's exec data comes from (e.g. "debug", or "betaDebug" for a
+// flavored module overriding optionalUnitTestTasks) from the unit test task name, instead of
+// hardcoding "debug" - AGP's intermediate output directories are named after the actual variant.
+def androidVariant = "debug"
+def unitTestTaskMatch = unitTestsTasks.find { it =~ /^test.+UnitTest$/ }
+if (unitTestTaskMatch) {
+    def stripped = (unitTestTaskMatch - "test" - "UnitTest")
+    if (stripped) {
+        androidVariant = stripped[0].toLowerCase() + stripped.substring(1)
+    }
+}
+def androidVariantCapitalized = androidVariant[0].toUpperCase() + androidVariant.substring(1)
+
+def deviceTestCoverageDir = isAndroidMultiplatformLibrary ? "androidDeviceTest" : "${androidVariant}AndroidTest"
+def androidTestsTasks = isAndroidMultiplatformLibrary
+        ? ["connectedAndroidDeviceTest"]
+        : ["connected${androidVariantCapitalized}AndroidTest".toString()]
+
+def baseDependsOn = connectedDevices > 0 ? unitTestsTasks + androidTestsTasks : unitTestsTasks
+
+// Test tasks feeding this module's coverage report. Deliberately not the full "check" task: it pulls
+// in every build type and target (lint per variant, native and js tests) which don't produce any
+// JaCoCo data.
+def coverageTestTasks = tasks.matching { it.name in baseDependsOn }
+// Exposed for the root "jacocoProjectReport" entry point (see jacoco.project.gradle).
+ext.jacocoCoverageTestTasks = coverageTestTasks
+
+// project.buildDir was removed in Gradle 9
+def buildDir = project.layout.buildDirectory.get().asFile
+
+tasks.register("jacocoModuleReport", JacocoReport) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
 
-    tasks.withType(VerificationTask.class).configureEach {
-        if (it.name.matches(/connected.+AndroidTest/) || it.name.matches(/test.*UnitTest/)) {
-            it.ignoreFailures = true
-        }
+    // The tests are NOT dependencies of the report: a task never runs when one of its dependencies
+    // failed, so a single failing test would prevent the report from being generated. Instead each
+    // test task is finalized by the report (finalizers run even when the finalized task fails) and
+    // the report is only ordered after them. The failing test task still fails the build.
+    mustRunAfter(coverageTestTasks)
+
+    // The file trees below read the output of these tasks without Gradle being able to infer it,
+    // which Gradle 8.14+ flags as an unsafe implicit dependency. Resolved lazily: in a multi-project
+    // build, AGP may not have registered the variant tasks of this project yet.
+    dependsOn {
+        ["process${androidVariantCapitalized}Manifest", "compile${androidVariantCapitalized}LibraryResources"]
+                .findAll { project.tasks.findByName(it) }
     }
 
     reports {
@@ -54,29 +109,48 @@ task jacocoModuleReport(type: JacocoReport, dependsOn: dependsOn) {
             'hilt_aggregated_deps/**'
     ]
 
-    def extraExcludes = project.ext.has("jacocoExtraExcludes") ? project.ext.jacocoExtraExcludes : [ ]
+    def extraExcludes = project.ext.has("jacocoExtraExcludes") ? project.ext.jacocoExtraExcludes : []
     jacocoExcludes.addAll(extraExcludes)
 
     final javaSrc = "${project.projectDir}/src/main/java"
     final kotlinSrc = "${project.projectDir}/src/main/kotlin"
     final multiplatformSrc = "${project.projectDir}/src/commonMain/kotlin"
-    // check for future sourceSets in the future
+    final multiplatformJvmSrc = "${project.projectDir}/src/jvmMain/kotlin"
+    final multiplatformAndroidSrc = "${project.projectDir}/src/androidMain/kotlin"
 
-    final androidModuleKotlinFileTree = fileTree(dir: "${project.buildDir}/tmp/kotlin-classes/debug", excludes: jacocoExcludes)
-    final androidModuleJavacFileTree = fileTree(dir: "${project.buildDir}/intermediates/javac/debug", excludes: jacocoExcludes)
-    final javaModuleKotlinFileTree = fileTree(dir: "${project.buildDir}/classes/kotlin/main", excludes: jacocoExcludes)
-    final javaModuleJavacFileTree = fileTree(dir: "${project.buildDir}/classes/java/main", excludes: jacocoExcludes)
+    // Not the "intermediates/classes/<variant>/jacoco<Variant>" directory of AGP: JaCoCo refuses the
+    // already-instrumented classes, the unit tests coverage needs the raw compiler output.
+    final androidModuleKotlinFileTree = fileTree(dir: "${buildDir}/intermediates/built_in_kotlinc/${androidVariant}/compile${androidVariantCapitalized}Kotlin/classes", excludes: jacocoExcludes)
+    final androidModuleLegacyKotlinFileTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${androidVariant}", excludes: jacocoExcludes)
+    final androidModuleJavacFileTree = fileTree(dir: "${buildDir}/intermediates/javac/${androidVariant}", excludes: jacocoExcludes)
+    final javaModuleKotlinFileTree = fileTree(dir: "${buildDir}/classes/kotlin/main", excludes: jacocoExcludes)
+    final javaModuleJavacFileTree = fileTree(dir: "${buildDir}/classes/java/main", excludes: jacocoExcludes)
+    final multiplatformJvmFileTree = fileTree(dir: "${buildDir}/classes/kotlin/jvm/main", excludes: jacocoExcludes)
+    final multiplatformAndroidFileTree = fileTree(dir: "${buildDir}/classes/kotlin/android/main", excludes: jacocoExcludes)
 
-    sourceDirectories.setFrom files([javaSrc, kotlinSrc, multiplatformSrc])
-    classDirectories.setFrom files([
-            androidModuleKotlinFileTree,
-            androidModuleJavacFileTree,
-            javaModuleKotlinFileTree,
-            javaModuleJavacFileTree
+    sourceDirectories.setFrom files([javaSrc, kotlinSrc, multiplatformSrc, multiplatformJvmSrc, multiplatformAndroidSrc])
+
+    // a single set of classes per module: the directories of the other targets or of an older
+    // com.android.library build may hold classes with the same names
+    def classFileTrees = hasJvmTarget ? [multiplatformJvmFileTree]
+            : isAndroidMultiplatformLibrary ? [multiplatformAndroidFileTree]
+            : [androidModuleKotlinFileTree, androidModuleLegacyKotlinFileTree, androidModuleJavacFileTree, javaModuleKotlinFileTree, javaModuleJavacFileTree]
+    classDirectories.setFrom files(classFileTrees).builtBy({
+        ["compile${androidVariantCapitalized}KotlinAndroid", "compile${androidVariantCapitalized}Kotlin",
+         "compile${androidVariantCapitalized}JavaWithJavac", "compileKotlin", "compileJava",
+         "compileAndroidMain", "compileKotlinJvm"]
+                .collect { project.tasks.findByName(it) }
+                .findAll { it != null }
+    })
+
+    // Scoped to the locations of the .exec/.ec files (the Gradle jacoco plugin's
+    // "jacoco/<testTask>.exec", AGP's unit test and connected test coverage outputs) instead of the
+    // whole build directory, which would make every task writing in it an implicit dependency.
+    executionData.setFrom files([
+            fileTree(dir: "${buildDir}/jacoco", includes: ["*.exec", "*.ec"]),
+            fileTree(dir: "${buildDir}/outputs/unit_test_code_coverage/${androidVariant}UnitTest", includes: ["*.exec", "*.ec"]),
+            fileTree(dir: "${buildDir}/outputs/code_coverage/${deviceTestCoverageDir}/connected", includes: ["**/*.ec"])
     ])
-
-    executionData.setFrom files(fileTree(dir: project.buildDir, includes: [
-            "**/*.exec",
-            "**/*.ec"
-    ]))
 }
+
+coverageTestTasks.configureEach { it.finalizedBy("jacocoModuleReport") }

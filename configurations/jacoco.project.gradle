@@ -1,9 +1,17 @@
 apply plugin: "jacoco"
 
+jacoco {
+    toolVersion = additionals.versions.jacoco.get()
+}
+
 gradle.projectsEvaluated {
-    rootProject.tasks.create("jacocoProjectReport", JacocoReport) {
+    def moduleReports = rootProject.subprojects.findAll {
+        isSourcesModule(it) && it.tasks.findByName("jacocoModuleReport")
+    }
+
+    def aggregatedReport = rootProject.tasks.register("jacocoAggregatedReport", JacocoReport) {
         group = "Reporting"
-        description = "Jacoco test coverage reports for whole project."
+        description = "Aggregates the Jacoco module reports, without running the tests (see jacocoProjectReport)."
 
         reports {
             csv.required = false
@@ -11,19 +19,48 @@ gradle.projectsEvaluated {
             html.required = true
         }
 
-        def moduleReports = rootProject.subprojects.findAll {
-            isSourcesModule(it) && it.tasks.findByName("jacocoModuleReport")
-        }
-
         def testReports = rootProject.subprojects.findAll {
-            isSourcesModule(it) && it.hasProperty("jacocoTestReport")
+            isSourcesModule(it) && it.tasks.findByName("jacocoTestReport")
         }
 
-        dependsOn(testReports.jacocoTestReport)
-        dependsOn(moduleReports.jacocoModuleReport)
+        dependsOn(testReports.collect { it.tasks.named("jacocoTestReport") })
+        dependsOn(moduleReports.collect { it.tasks.named("jacocoModuleReport") })
 
-        sourceDirectories.setFrom files(moduleReports.jacocoModuleReport.sourceDirectories)
-        classDirectories.setFrom files(moduleReports.jacocoModuleReport.classDirectories)
-        executionData.setFrom files(moduleReports.jacocoModuleReport.executionData)
+        // The module reports read the output of these tasks: depending on the module reports isn't
+        // enough for the implicit dependency validation of Gradle in this aggregated context.
+        moduleReports.each { module ->
+            ["processDebugManifest", "compileDebugLibraryResources"].each {
+                if (module.tasks.findByName(it)) {
+                    dependsOn(module.tasks.named(it))
+                }
+            }
+        }
+
+        def reports = moduleReports.collect { it.tasks.named("jacocoModuleReport").get() }
+        sourceDirectories.setFrom files(reports.sourceDirectories)
+        classDirectories.setFrom files(reports.classDirectories)
+        executionData.setFrom files(reports.executionData)
+    }
+
+    // Each module report is itself a finalizer of the tests of its module (see jacoco.gradle), so
+    // the aggregated report still runs when some of those tests failed.
+    moduleReports.each { it.tasks.named("jacocoModuleReport") { finalizedBy(aggregatedReport) } }
+
+    // Entry point: runs every test feeding the coverage reports, the reports being generated as
+    // finalizers of those tests. Must be run with --continue: otherwise Gradle stops at the first
+    // failing test and the remaining modules are neither tested nor reported.
+    def projectReport = rootProject.tasks.register("jacocoProjectReport") {
+        group = "Reporting"
+        description = "Runs the tests feeding the Jacoco reports then generates them. Use with --continue."
+
+        dependsOn(moduleReports.collect { it.jacocoCoverageTestTasks })
+        // Also covers the case where no coverage test task exists at all.
+        finalizedBy(aggregatedReport)
+    }
+
+    gradle.taskGraph.whenReady { graph ->
+        if (graph.hasTask(projectReport.get()) && !gradle.startParameter.continueOnFailure) {
+            logger.warn("jacocoProjectReport run without --continue: a failing test will stop the build before every module is tested and reported.")
+        }
     }
 }
