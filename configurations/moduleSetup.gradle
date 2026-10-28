@@ -9,8 +9,15 @@ afterEvaluate { project ->
     def isJava = project.plugins.hasPlugin("java-library") ||
             project.plugins.hasPlugin("java")
 
+    def isMultiplatform = project.plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")
+
+    // the Android target of Kotlin Multiplatform, configured in its own kotlin { android { } } block,
+    // it only shares the tests and the coverage
+    def isKmpAndroidLibrary = project.plugins.hasPlugin("com.android.kotlin.multiplatform.library")
+
     def isLibrary = project.plugins.hasPlugin("java-library") ||
-            project.plugins.hasPlugin("com.android.library")
+            project.plugins.hasPlugin("com.android.library") ||
+            isKmpAndroidLibrary
 
     def hasSonarqube = project.plugins.hasPlugin("org.sonarqube")
     def hasLicense = project.plugins.hasPlugin("com.jaredsburrows.license")
@@ -25,6 +32,12 @@ afterEvaluate { project ->
         if (hasSonarqube) {
             apply from: gradle.extended.files.sonarqube
         }
+        apply from: gradle.extended.files.jacoco
+    } else if (isMultiplatform) {
+        if (isKmpAndroidLibrary) {
+            setupMultiplatformHostTests()
+        }
+
         apply from: gradle.extended.files.jacoco
     }
 
@@ -55,8 +68,11 @@ def setupModule(isAndroid, isAndroidComponent) {
             compileSdk Integer.parseInt(additionals.versions.compileSdkVersion.get())
 
             defaultConfig {
-                minSdkVersion minSdkValue
-                targetSdkVersion Integer.parseInt(additionals.versions.targetSdkVersion.get())
+                minSdk = minSdkValue
+                // AGP 9 removed the targetSdk of the libraries
+                if (!isAndroidComponent) {
+                    targetSdk = Integer.parseInt(additionals.versions.targetSdkVersion.get())
+                }
 
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -66,7 +82,8 @@ def setupModule(isAndroid, isAndroidComponent) {
             }
 
             buildTypes {
-                debug.testCoverageEnabled true
+                debug.enableUnitTestCoverage = true
+                debug.enableAndroidTestCoverage = true
                 if (isAndroidComponent) {
                     release.minifyEnabled false
                 }
@@ -89,14 +106,14 @@ def setupModule(isAndroid, isAndroidComponent) {
                 }
             }
 
-            lintOptions {
-                abortOnError true
-                checkDependencies true
-                checkReleaseBuilds false
-                checkAllWarnings false
-                ignoreTestSources true
-                warningsAsErrors false
-                disable = [
+            lint {
+                abortOnError = true
+                checkDependencies = true
+                checkReleaseBuilds = false
+                checkAllWarnings = false
+                ignoreTestSources = true
+                warningsAsErrors = false
+                disable += [
                         "GoogleAppIndexingWarning",
                         "GradleDependency",
                         "JavaPluginLanguageLevel",
@@ -138,13 +155,41 @@ def setupModule(isAndroid, isAndroidComponent) {
             testImplementation additionals.kotlinx.coroutines.test
         }
     } else {
-        sourceCompatibility = javaVersionObject
-        targetCompatibility = javaVersionObject
+        // the project conventions were removed in Gradle 9
+        java {
+            sourceCompatibility = javaVersionObject
+            targetCompatibility = javaVersionObject
+        }
 
         test {
             maxParallelForks = Runtime.runtime.availableProcessors() - 1
             maxHeapSize = "256m"
         }
+    }
+}
+
+// the host tests of the KMP Android library, enabled by withHostTest { } in kotlin { android { } }
+def setupMultiplatformHostTests() {
+    if (!configurations.findByName("androidHostTestImplementation")) {
+        return
+    }
+
+    dependencies {
+        androidHostTestImplementation additionals.junit.jupiter.api
+        androidHostTestImplementation additionals.junit.jupiter.params
+        androidHostTestRuntimeOnly additionals.junit.jupiter.engine
+        androidHostTestRuntimeOnly additionals.junit.vintage.engine
+        androidHostTestRuntimeOnly additionals.junit.platform.launcher
+
+        androidHostTestImplementation additionals.junit
+        androidHostTestImplementation additionals.mockito.core
+        androidHostTestImplementation additionals.mockito.kotlin
+        androidHostTestImplementation additionals.kotlinx.coroutines.test
+    }
+
+    tasks.withType(Test).matching { it.name == "testAndroidHostTest" }.configureEach {
+        useJUnitPlatform()
+        maxParallelForks = Runtime.runtime.availableProcessors() - 1
     }
 }
 
@@ -167,10 +212,10 @@ def setupCommonTasks(isAndroid) {
 
     try {
         def klass = Class.forName("org.jetbrains.kotlin.gradle.tasks.KotlinCompile")
+        def jvmTarget = Class.forName("org.jetbrains.kotlin.gradle.dsl.JvmTarget").fromTarget(javaVersion)
+        // kotlinOptions was removed in Kotlin 2.2
         tasks.withType(klass).configureEach {
-            kotlinOptions {
-                jvmTarget = javaVersion
-            }
+            compilerOptions.jvmTarget.set(jvmTarget)
         }
     } catch (Throwable ignored) {
         // nothing
