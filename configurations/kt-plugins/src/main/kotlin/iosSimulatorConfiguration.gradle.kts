@@ -34,15 +34,12 @@ afterEvaluate {
     if (!iOSSimulatorUuid.isEmpty() && isMultiplatform) {
         println("Having a multiplatform project ${project}")
         newTasks.forEach { triple ->
-            tasks.register(triple.name) {
+            // Project.exec was removed in Gradle 9
+            tasks.register<Exec>(triple.name) {
                 if (null != triple.next) {
                     dependsOn(triple.next)
                 }
-                doLast {
-                    exec {
-                        commandLine(triple.args)
-                    }
-                }
+                commandLine(triple.args)
             }
         }
 
